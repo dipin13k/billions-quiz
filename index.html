@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test your Billions knowledge</title>
+    <meta name="description" content="Test your knowledge about Billions — the platform verifying humans & AI globally without biometrics. Take the quiz now!">
+    <meta name="keywords" content="Billions, quiz, verification, ZK, zero-knowledge, Web3, crypto, AI">
+    <meta name="author" content="Your Name">
+    <title>🧠 Billions Quiz — Test Your Knowledge</title>
     <style>
         * {
             margin: 0;
@@ -305,19 +307,36 @@
                 font-size: 1.5rem;
             }
         }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            .logo {
+                font-size: 1.8rem;
+            }
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            .question h3 {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">🧠 Billions quiz</div>
+            <div class="logo">🧠 Billions Quiz</div>
             <div class="subtitle">Test Your Knowledge</div>
         </div>
 
         <!-- Start Screen -->
         <div id="start-screen" class="quiz-section active start-screen">
-            <h2>Welcome to My first quiz model </h2>
-            <p>Test your knowledge and You'll get immediate feedback on each question and see your final score at the end.</p>
+            <h2>Welcome to My First Quiz Model</h2>
+            <p>Test your knowledge and get immediate feedback on each question. See your final score at the end!</p>
             <div class="buttons">
                 <button class="btn" onclick="startQuiz()">Start Quiz</button>
             </div>
@@ -373,13 +392,14 @@
             </div>
 
             <div class="buttons">
+                <button class="btn" onclick="shareResults()">Share Your Score</button>
                 <button class="btn" onclick="restartQuiz()">Take Quiz Again</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Quiz data
+    (function() {
         const quizData = [
             {
                 question: "Billions is mainly focused on 👇",
@@ -398,7 +418,7 @@
             },
             {
                 question: "Billions recently announced a capital funding round of how much?",
-                options: ["$10 million", "$30 million", "$50 million", "$20 million"],
+                options: ["\$10 million", "\$30 million", "\$50 million", "\$20 million"],
                 correct: 1
             },
             {
@@ -406,7 +426,6 @@
                 options: ["You unlock exclusive benefits and rewards", "You lose your privacy", "Nothing changes", "You get banned from other platforms"],
                 correct: 0
             },
-        
         ];
 
         let currentQuestion = 0;
@@ -439,6 +458,8 @@
                 optionElement.className = 'option';
                 optionElement.textContent = option;
                 optionElement.onclick = () => selectOption(index);
+                optionElement.setAttribute('role', 'button');
+                optionElement.setAttribute('tabindex', '0');
                 optionsContainer.appendChild(optionElement);
             });
 
@@ -528,6 +549,28 @@
             document.getElementById('results-screen').classList.remove('active');
             document.getElementById('start-screen').classList.add('active');
         }
+
+        function shareResults() {
+            const percentage = Math.round((score / quizData.length) * 100);
+            const message = `I scored ${percentage}% on the Billions Quiz! Test your knowledge too 👉 https://your-vercel-url.vercel.app`;
+            navigator.clipboard.writeText(message).then(() => {
+                alert('Score copied to clipboard! Paste and share!');
+            }).catch(err => {
+                alert('Failed to copy. Please manually share: ' + message);
+            });
+        }
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', (e) => {
+            if (selectedOption === -1 && e.key >= '1' && e.key <= '4') {
+                const index = parseInt(e.key) - 1;
+                if (index < quizData[currentQuestion].options.length) {
+                    selectOption(index);
+                }
+            }
+        });
+
+    })();
     </script>
 </body>
 </html>
